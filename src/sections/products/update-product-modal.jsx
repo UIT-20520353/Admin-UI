@@ -167,7 +167,7 @@ export default function UpdateProductModal({ handleClose, open, categories, prod
             <TextField
               autoComplete="off"
               name="amount"
-              label="Amount"
+              label="Price"
               value={form.amount}
               onChange={(e) => onChangeTextValue(e, 'amount')}
               error={errors.amount}

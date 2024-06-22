@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
-import { TableRow, TableBody, TableCell, IconButton } from '@mui/material';
+import { TableRow, TableBody, TableCell, IconButton, TablePagination } from '@mui/material';
 
 import productApi from 'src/api/productApi';
 import categoryApi from 'src/api/categoryApi';
@@ -29,6 +29,7 @@ export default function ProductsView() {
   const [categories, setCategories] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(undefined);
   const [dataModal, setDataModal] = useState(undefined);
+  const [, setRowsPerPage] = useState(5);
 
   const handleOpen = () => setOpen(true);
 
@@ -68,6 +69,11 @@ export default function ProductsView() {
         setDataModal({ title: 'Error', message: 'Something went wrong!', type: 'error' });
       }
     });
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
   };
 
   useEffect(() => {
@@ -136,7 +142,7 @@ export default function ProductsView() {
                             }}
                           />
                         </TableCell>
-                        <TableCell>{product.amount}</TableCell>
+                        <TableCell>${product.amount}</TableCell>
                         <TableCell>{product.category.name}</TableCell>
                         <TableCell align="center">
                           <IconButton onClick={() => setSelectedProduct(product)}>
@@ -151,6 +157,17 @@ export default function ProductsView() {
             </Table>
           </TableContainer>
         </Scrollbar>
+        <TablePagination
+          page={page}
+          component="div"
+          count={products.total}
+          rowsPerPage={10}
+          rowsPerPageOptions={[5, 10, 25]}
+          onPageChange={(_, newPage) => {
+            setPage(newPage);
+          }}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Card>
       <AddProductModal open={open} handleClose={handleClose} categories={categories} />
       <UpdateProductModal

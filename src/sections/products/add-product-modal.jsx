@@ -163,7 +163,7 @@ export default function AddProductModal({ handleClose, open, categories }) {
             <TextField
               autoComplete="off"
               name="amount"
-              label="Amount"
+              label="Price"
               value={form.amount}
               onChange={(e) => onChangeTextValue(e, 'amount')}
               error={errors.amount}
