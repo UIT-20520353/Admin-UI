@@ -13,7 +13,16 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function UserTableRow({ email, phone, index, handleClick }) {
+export default function UserTableRow({
+  email,
+  phone,
+  firstName,
+  lastName,
+  address,
+  city,
+  index,
+  handleClick,
+}) {
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -43,7 +52,11 @@ export default function UserTableRow({ email, phone, index, handleClick }) {
           </Stack>
         </TableCell>
 
+        <TableCell>{firstName}</TableCell>
+        <TableCell>{lastName}</TableCell>
         <TableCell>{phone}</TableCell>
+        <TableCell>{address}</TableCell>
+        <TableCell>{city}</TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
@@ -74,6 +87,10 @@ export default function UserTableRow({ email, phone, index, handleClick }) {
 UserTableRow.propTypes = {
   email: PropTypes.any,
   phone: PropTypes.any,
+  firstName: PropTypes.any,
+  lastName: PropTypes.any,
+  address: PropTypes.any,
+  city: PropTypes.any,
   index: PropTypes.any,
   handleClick: PropTypes.func,
 };

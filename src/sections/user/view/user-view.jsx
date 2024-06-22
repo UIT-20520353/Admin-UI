@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 // import { users } from 'src/_mock/user';
-import customerApi from 'src/api/customer';
+import userApi from 'src/api/userApi';
 
 import Scrollbar from 'src/components/scrollbar';
 
@@ -47,9 +47,11 @@ export default function UserPage() {
   };
 
   const getUsers = async () => {
-    const res = await customerApi.getAll();
+    const res = await userApi.getAll();
+
     if (res.status === 200) {
       setUsers(res.data);
+      console.log(res.data);
     }
   };
 
@@ -93,6 +95,7 @@ export default function UserPage() {
     comparator: getComparator(order, orderBy),
   });
 
+  console.log(users);
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -113,7 +116,11 @@ export default function UserPage() {
                 headLabel={[
                   { id: 'index', label: 'Index' },
                   { id: 'email', label: 'Email' },
+                  { id: 'firstName', label: 'First Name' },
+                  { id: 'lastName', label: 'Last Name' },
                   { id: 'phone', label: 'Phone' },
+                  { id: 'address', label: 'Address' },
+                  { id: 'city', label: 'City' },
                   { id: '' },
                 ]}
               />
@@ -122,9 +129,13 @@ export default function UserPage() {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <UserTableRow
-                      key={row._id}
+                      key={row.id}
                       email={row.email}
+                      firstName={row.firstName}
+                      lastName={row.lastName}
                       phone={row.phone}
+                      address={row.address}
+                      city={row.city}
                       index={index}
                       handleClick={(event) => handleClick(event, row)}
                     />

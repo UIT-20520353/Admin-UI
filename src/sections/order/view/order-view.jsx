@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 // import { users } from 'src/_mock/user';
-import orderApi from 'src/api/order';
+import orderApi from 'src/api/orderApi';
 
 import Scrollbar from 'src/components/scrollbar';
 
@@ -49,7 +49,7 @@ export default function OrderPage() {
   const getUsers = async () => {
     const res = await orderApi.getAllOrder();
     if (res.status === 200) {
-      setShoppingOrders(res.data.data);
+      setShoppingOrders(res.data);
     }
   };
 
@@ -126,12 +126,12 @@ export default function OrderPage() {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => (
                     <OrderTableRow
-                      key={row._id}
-                      email={row.customer.email}
-                      phone={row.phone}
+                      key={row.id}
+                      email={row.user.email}
+                      phone={row.user.phone}
                       index={index}
-                      orderId={row.orderId}
-                      orderStatus={row.status}
+                      orderId={row.id}
+                      orderStatus={row.orderStatus}
                       amount={row.amount}
                       createdAt={row.createdAt}
                       handleClick={(event) => handleClick(event, row)}
@@ -157,7 +157,7 @@ export default function OrderPage() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
-      <OrderDetailModal orderId={selectedUser?.orderId} open={open} handleClose={handleClose} />
+      <OrderDetailModal orderId={selectedUser?.id} open={open} handleClose={handleClose} />
     </Container>
   );
 }
