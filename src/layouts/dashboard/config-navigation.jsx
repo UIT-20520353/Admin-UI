@@ -22,6 +22,11 @@ const navConfig = [
     path: '/products',
     icon: icon('ic_cart'),
   },
+  {
+    title: 'order',
+    path: '/order',
+    icon: icon('ic_cart'),
+  },
 ];
 
 export default navConfig;

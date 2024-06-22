@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState, useEffect, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -7,7 +7,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import { Button, Select, MenuItem, FormControl } from '@mui/material';
 
-import orderApi from 'src/api/order';
+import orderApi from 'src/api/orderApi';
 
 import ShopProductCard from '../products/product-card';
 
@@ -24,10 +24,11 @@ const style = {
   overflow: 'auto',
 };
 
+const initialState = {
+  status: '',
+};
+
 export default function OrderDetailModal({ orderId, handleClose, open }) {
-  const initialState = {
-    status: '',
-  };
   const [formValue, setFormValue] = useState(initialState);
   // eslint-disable-next-line no-unused-vars
   const [detail, setDetail] = useState({});
@@ -37,18 +38,31 @@ export default function OrderDetailModal({ orderId, handleClose, open }) {
   };
 
   const statuses = [
-    { id: 'New Order', name: 'New Order' },
-    { id: 'Paid', name: 'Paid' },
-    { id: 'Delivering', name: 'Delivering' },
-    { id: 'Cancel', name: 'Cancel' },
-    { id: 'Success', name: 'Success' },
+    { id: 'NEW', name: 'NEW' },
+    { id: 'DELIVERY', name: 'DELIVERY' },
+    { id: 'SUCCESS', name: 'SUCCESS' },
   ];
 
-  const updateOrderDetail = async () => {
-    await orderApi.updateOrder(orderId, formValue.status);
+  const getOrderInfo = useCallback(async () => {
+    const res = await orderApi.getOrder(orderId);
+    if (res.status === 200) {
+      setDetail(res.data);
+
+      setFormValue({
+        status: res.data?.orderStatus,
+      });
+    }
+  }, [orderId]);
+
+  useEffect(() => {
+    getOrderInfo();
+  }, [orderId, getOrderInfo]);
+
+  const updateOrderDetail = useCallback(async () => {
+    await orderApi.updateCategory(orderId, formValue.status);
     window.location.reload();
     handleClose();
-  };
+  }, [formValue.status, orderId, handleClose]);
 
   return (
     detail && (
@@ -67,7 +81,7 @@ export default function OrderDetailModal({ orderId, handleClose, open }) {
             </Grid>
             <Grid xs={12} sm={8} md={8} sx={{ textAlign: 'end' }}>
               <Typography id="modal-modal-title" variant="body1" component="h2">
-                {detail?.customer?.email}
+                {detail?.user?.email}
               </Typography>
             </Grid>
             <Grid xs={12} sm={4} md={4}>
@@ -77,7 +91,7 @@ export default function OrderDetailModal({ orderId, handleClose, open }) {
             </Grid>
             <Grid xs={12} sm={8} md={8} sx={{ textAlign: 'end' }}>
               <Typography id="modal-modal-title" variant="body1" component="h2">
-                {detail?.name}
+                {detail?.user?.firstName}
               </Typography>
             </Grid>
             <Grid xs={12} sm={4} md={4}>
@@ -142,12 +156,12 @@ export default function OrderDetailModal({ orderId, handleClose, open }) {
                 Items
               </Typography>
               <Grid container spacing={3} sx={{ width: '100%' }}>
-                {detail?.items?.map((item) => (
-                  <Grid key={item.product._id} xs={12} sm={6} md={6}>
+                {detail?.orderProducts?.map((item) => (
+                  <Grid key={item.product.id} xs={12} sm={6} md={6}>
                     <ShopProductCard
                       product={item.product}
                       getProducts={() => {}}
-                      quantity={item.quantity}
+                      quantity={item.number}
                     />
                   </Grid>
                 ))}

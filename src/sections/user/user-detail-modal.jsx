@@ -50,6 +50,46 @@ export default function UserDetailModal({ user, handleClose, open }) {
               {user?.phone}
             </Typography>
           </Grid>
+          <Grid xs={12} sm={3} md={3}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              First Name:
+            </Typography>
+          </Grid>
+          <Grid xs={12} sm={9} md={9} sx={{ textAlign: 'end' }}>
+            <Typography id="modal-modal-title" variant="body1" component="h2">
+              {user?.firstName}
+            </Typography>
+          </Grid>
+          <Grid xs={12} sm={3} md={3}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Last Name:
+            </Typography>
+          </Grid>
+          <Grid xs={12} sm={9} md={9} sx={{ textAlign: 'end' }}>
+            <Typography id="modal-modal-title" variant="body1" component="h2">
+              {user?.lastName}
+            </Typography>
+          </Grid>
+          <Grid xs={12} sm={3} md={3}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Address:
+            </Typography>
+          </Grid>
+          <Grid xs={12} sm={9} md={9} sx={{ textAlign: 'end' }}>
+            <Typography id="modal-modal-title" variant="body1" component="h2">
+              {user?.address}
+            </Typography>
+          </Grid>
+          <Grid xs={12} sm={3} md={3}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              City:
+            </Typography>
+          </Grid>
+          <Grid xs={12} sm={9} md={9} sx={{ textAlign: 'end' }}>
+            <Typography id="modal-modal-title" variant="body1" component="h2">
+              {user?.city}
+            </Typography>
+          </Grid>
         </Grid>
 
         <OrderModalTable orders={user?.orders} />
