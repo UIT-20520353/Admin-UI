@@ -61,15 +61,13 @@ export default function ProductsView() {
   };
 
   const onUpdateProduct = (product) => {
-    if (product.file === null) {
-      productApi.updateProduct({ ...product, image: product.imgUrl }).then((res) => {
-        if (res.status === 204) {
-          handleCloseUpdate(true);
-        } else {
-          setDataModal({ title: 'Error', message: 'Something went wrong!', type: 'error' });
-        }
-      });
-    }
+    productApi.updateProduct({ ...product, image: product.image }).then((res) => {
+      if (res.status === 204) {
+        handleCloseUpdate(true);
+      } else {
+        setDataModal({ title: 'Error', message: 'Something went wrong!', type: 'error' });
+      }
+    });
   };
 
   useEffect(() => {
